@@ -1,0 +1,79 @@
+
+<div id="layoutSidenav_nav">
+    <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+        <div class="sb-sidenav-menu">
+            <div class="nav">
+                <div class="sb-sidenav-menu-heading">Core</div>
+                            <a class="nav-link" href="{% url 'dashboard' %}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Dashboard
+                            </a>
+                <div class="sb-sidenav-menu-heading">Administration</div>
+                
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts1" aria-expanded="false" aria-controls="collapseLayouts1">
+                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                    Students
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseLayouts1" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="{% url 'students' %}">View All</a>
+                        <a class="nav-link" href="{% url 'create_student' %}">Add New</a>
+                    </nav>
+                </div>
+
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts4" aria-expanded="false" aria-controls="collapseLayouts4">
+                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                    Warden
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseLayouts4" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="{% url 'wardens' %}">View All</a>
+                        <a class="nav-link" href="{% url 'create_warden' %}">Add New</a>
+                    </nav>
+                </div>
+
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts2" aria-expanded="false" aria-controls="collapseLayouts2">
+                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                    Hostels
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseLayouts2" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="{% url 'hostels' %}">View All</a>
+                        <a class="nav-link" href="{% url 'create_hostel' %}">Add New</a>
+                    </nav>
+                </div>
+
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts3" aria-expanded="false" aria-controls="collapseLayouts3">
+                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                    Rooms
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="collapseLayouts3" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="{% url 'rooms' %}">View All</a>
+                        <a class="nav-link" href="{% url 'create_room' %}">Add New</a>
+                    </nav>
+                </div>
+
+            
+                <div class=""></div>
+                    <a class="nav-link" href="charts.html">
+                        <div class="sb-nav-link-icon"><i class="fas fa-gear"></i></div>
+                        Generate Report
+                    </a>
+        
+                    <a class="nav-link" href="{% url 'logout' %}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-lock"></i></div>
+                        Logout
+                    </a>
+                </div>
+        </div>
+        <div class="sb-sidenav-footer">
+            <div class="small">Logged in as:</div>
+            {{ request.user }}
+        </div>
+    </nav>
+</div>
