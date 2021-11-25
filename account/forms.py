@@ -32,3 +32,9 @@ class WardenForm(ModelForm):
     class Meta:
         model = Warden
         fields = '__all__'
+
+
+class ApplyForHostelForm(ModelForm):
+    class Meta:
+        model = Apply
+        fields = ['favourite_hostel',]

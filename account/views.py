@@ -162,7 +162,7 @@ def deleteWarden(request, pk):
     return render(request, 'account/warden/delete.html', context)
 
 
-
+@login_required(login_url="login")
 def rooms(request):
     rooms = Room.objects.all()
     context = {"rooms": rooms}
@@ -267,3 +267,19 @@ def deleteStudent(request, pk):
 
     context = {'student_info': student_info}
     return render(request, 'account/students/delete.html', context)
+
+
+def apply_for_hostel(request):
+
+    if request.user is not None:
+        apply_form = ApplyForHostelForm(request.POST)
+
+        if request.method == 'POST':
+            if apply_form.is_valid():
+                apply_form.save()
+                # send flash message
+                messages.success(request, "You have successfully applied for an Hostel.")
+                return redirect('/profile')
+
+    context = {'apply_form': apply_form}
+    return render(request, 'account/apply_for_hostel.html', context)

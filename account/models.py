@@ -38,7 +38,7 @@ class Student(models.Model):
     next_of_kin_phone_no = models.CharField(max_length=200, null=True)
     next_of_kin_address = models.CharField(max_length=200, null=True)
     relationship = models.CharField(max_length=200, null=True)
-    # student's 
+    # student's bio-data
     reg_no = models.CharField(max_length=200, null=True, unique=True)
     course = models.CharField(max_length=200, null=True)
     faculty = models.ForeignKey('faculty', null=True, on_delete=models.SET_NULL)
@@ -166,6 +166,15 @@ class Allocate(models.Model):
 
     def __str__(self):
         return self.status
+
+
+class Apply(models.Model):
+
+    favourite_hostel = models.CharField(max_length=200, null=True)
+    room_alloted = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.id)
 
 class Leave(models.Model):
     student = models.ForeignKey('Student', on_delete=models.CASCADE)
