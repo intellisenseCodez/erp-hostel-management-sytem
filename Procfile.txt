@@ -1,1 +1,1 @@
-web: gunicorn erp_hostel.wsgi --log-file
+web: gunicorn erp_hostel.wsgi --log-file -
