@@ -60,7 +60,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'erp_hostel.erp_hostel.urls'
+ROOT_URLCONF = 'erp_hostel.urls'
 
 TEMPLATES = [
     {
