@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
+from django.core.validators import MinLengthValidator
 
 # Create your models here.
 
@@ -8,7 +9,8 @@ from django.contrib.auth.models import AbstractUser
 
 
 class Student(models.Model):
-    # user = models.OneToOneField(User, default=None, null=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+
     gender_choices = [
         ('Male', 'Male'), 
         ('Female', 'Female')
@@ -40,14 +42,15 @@ class Student(models.Model):
     relationship = models.CharField(max_length=200, null=True)
     # student's bio-data
     reg_no = models.CharField(max_length=200, null=True, unique=True)
-    course = models.CharField(max_length=200, null=True)
-    faculty = models.ForeignKey('faculty', null=True, on_delete=models.SET_NULL)
-    department = models.ForeignKey('department', null=True, on_delete=models.SET_NULL)
+    
+    
+    faculty = models.OneToOneField('faculty', null=True, on_delete=models.CASCADE)
+    department = models.OneToOneField('department', null=True, on_delete=models.SET_NULL)
+
     level = models.CharField(choices=level_choices, max_length=4, null=True)
-    hostel = models.ForeignKey('hostel', null=True, on_delete=models.SET_NULL)
-    room_no = models.ForeignKey('room', null=True, on_delete=models.SET_NULL)
-    bed_no = models.OneToOneField('bed', null=True, on_delete=models.SET_NULL)
+
     receipt_no = models.CharField(max_length=200, null=True, unique=True, help_text="Ensure you enter a valid receipt number.")
+    profile_pic = models.ImageField(default="default.jpg",null=True, blank=True)
     reg_status = models.CharField(choices=reg_choices, max_length=10, default=None, null=True)
     date_of_created = models.DateTimeField(auto_now_add=True)
     room_allotted = models.BooleanField(default=False)
@@ -57,12 +60,15 @@ class Student(models.Model):
 
 
 class Course(models.Model):
-    name = models.CharField(max_length=200, null=True)
-    department = models.OneToOneField('department', null=True, on_delete=models.CASCADE)
-    date_created = models.DateTimeField(auto_now_add=True, null=True)
+    room_choice = [
+        ('classic', 'Classic'),
+        ('premium', 'Premium'),
+    ]
+    code = models.CharField(max_length=100, default=None)
+    room_type = models.CharField(choices=room_choice, max_length=7, default=None)
 
     def __str__(self):
-        return self.name
+        return self.code
 
 class Faculty(models.Model):
     name = models.CharField(max_length=200, null=True)
@@ -101,6 +107,8 @@ class Warden(models.Model):
     date_created = models.DateTimeField(auto_now_add=True, null=True)
 
     hostel = models.OneToOneField('Hostel',null=True, on_delete=models.SET_NULL)
+    room = models.OneToOneField('Room', null=True, on_delete=models.CASCADE)
+    room_allotted = models.BooleanField(default=False)
 
     def __str__(self):
         return "%s %s" % (self.first_name, self.last_name)
@@ -112,8 +120,8 @@ class Room(models.Model):
         ('premium', 'Premium'),
     ]
 
-    room_no = models.CharField(max_length=10, null=True)
-
+    room_no = models.CharField(validators=[MinLengthValidator(2)], max_length=5,unique=True, null=True)
+    max_persons = models.IntegerField(default=2)
     room_type = models.CharField(choices=room_choice, max_length=7, default=None)
     vacant = models.BooleanField(default=False)
     # make a dropdown of all available hostels
@@ -124,7 +132,7 @@ class Room(models.Model):
     date_created = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
-        return self.room_no
+        return self.room_name
 
 class Bed(models.Model):
     bed_no = models.CharField(max_length=100, 
@@ -147,7 +155,7 @@ class Hostel(models.Model):
     name = models.CharField(max_length=200)
     gender = models.CharField(choices=gender_choices, max_length=6, default=None, null=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
-    # warden = models.OneToOneField(Warden, null=True, on_delete=models.SET_NULL)
+    warden_name = models.CharField(max_length=100, blank=True)
     
     def __str__(self):
         return self.name
@@ -170,8 +178,16 @@ class Allocate(models.Model):
 
 class Apply(models.Model):
 
-    favourite_hostel = models.CharField(max_length=200, null=True)
+    room = models.ForeignKey('Room', default=None, null=True, on_delete=models.CASCADE)
+    checkIn = models.DateField(null=True)
+    CheckOut = models.DateField(null=True)
+    student = models.ForeignKey("Student", default=None, null=True, on_delete=models.CASCADE)
     room_alloted = models.BooleanField(default=False)
+    accepted = models.BooleanField(default=False)
+    rejected = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name_plural = 'Application'
 
     def __str__(self):
         return str(self.id)

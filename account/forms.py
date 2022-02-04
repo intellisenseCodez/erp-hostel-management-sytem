@@ -15,7 +15,8 @@ class CreateUserForm(UserCreationForm):
 class StudentForm(ModelForm):
     class Meta:
         model = Student
-        fields = ['first_name', 'middle_name', 'last_name', 'email', 'date_of_birth', 'gender', 'phone_no', 'home_address', 'next_of_kin_name', 'next_of_kin_phone_no', 'next_of_kin_address', 'relationship', 'reg_no', 'course', 'department', 'faculty', 'level', 'receipt_no']
+        fields = '__all__'
+        exclude=['user']
 
 class HostelForm(ModelForm):
     class Meta:
@@ -37,4 +38,4 @@ class WardenForm(ModelForm):
 class ApplyForHostelForm(ModelForm):
     class Meta:
         model = Apply
-        fields = ['favourite_hostel',]
+        fields = '__all__'

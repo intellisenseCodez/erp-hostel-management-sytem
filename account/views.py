@@ -1,58 +1,68 @@
+from multiprocessing import context
+from unicodedata import name
+from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+
+from .decorators import unauthenticated_user, allowed_users, admin_only
+
 
 from .models import *
 from .forms import *
 
 # Create your views here.
-
+@unauthenticated_user
 def loginPage(request):
-    if request.user.is_authenticated:
-        return redirect('dashboard')
-    else:
 
-        if request.method == 'POST':
-            username = request.POST.get('username')
-            password = request.POST.get('password')
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
-            user = authenticate(request, username=username, password=password)
+        user = authenticate(request, username=username, password=password)
 
-            if user is not None:
-                login(request, user)
-                return redirect('dashboard')
-            else:
-                messages.info(request, 'Username OR Password is incorrect!')
+        if user is not None:
+            login(request, user)
+            return redirect('dashboard')
+        else:
+            messages.info(request, 'Username OR Password is incorrect!')
 
-        context = {}
-        return render(request, 'account/login.html', context)
+    context = {}
+    return render(request, 'account/login.html', context)
 
 
 def logoutUser(request):
     logout(request)
     return redirect('login')
 
+@unauthenticated_user
 def registerPage(request):
-    if request.user.is_authenticated:
-        return redirect('dashboard')
-    else:
-        form = CreateUserForm()
+    form = CreateUserForm()
 
-        if request.method == 'POST':
-            form = CreateUserForm(request.POST)
-            if form.is_valid():
-                form.save()
-                # send flash message
-                messages.success(request, "Account was successfully created.")
-                return redirect('login')
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            username = form.cleaned_data.get('username')
 
-        context = {'form': form}
-        return render(request, 'account/register.html', context)
-        
+            group = Group.objects.get(name='student')
+            user.groups.add(group)
+
+            Student.objects.create(user=user)
+
+            # send flash message
+            messages.success(request, "Account was successfully created for " + username)
+            return redirect('login')
+
+    context = {'form': form}
+    return render(request, 'account/register.html', context)
+
 
 @login_required(login_url="login")
+@admin_only
 def home(request):
     students = Student.objects.all()
     context = {"students": students}
@@ -60,18 +70,21 @@ def home(request):
 
 
 @login_required(login_url="login")
+@allowed_users(allowed_roles=['admin',])
 def hostels(request):
     hostels = Hostel.objects.all()
     context = {"hostels": hostels}
     return render(request, 'account/hostel/all.html', context)
 
 @login_required(login_url="login")
+@allowed_users(allowed_roles=['admin',])
 def hostelSingle(request, pk):
     hostel = Hostel.objects.get(id=pk)
     context = {"hostel": hostel}
     return render(request, 'account/hostel/view.html', context)
 
 @login_required(login_url="login")
+@allowed_users(allowed_roles=['admin',])
 def createHostel(request):
     hostel_form = HostelForm()
 
@@ -85,6 +98,7 @@ def createHostel(request):
     return render(request, 'account/hostel/add.html', context)
 
 @login_required(login_url="login")
+@allowed_users(allowed_roles=['admin',])
 def updateHostel(request, pk):
     hostel = Hostel.objects.get(id=pk)
     hostel_form = HostelForm(instance=hostel)
@@ -99,6 +113,7 @@ def updateHostel(request, pk):
     return render(request, 'account/hostel/add.html', context)
 
 @login_required(login_url="login")
+@allowed_users(allowed_roles=['admin',])
 def deleteHostel(request, pk):
     hostel_info = Hostel.objects.get(id=pk)
 
@@ -111,18 +126,21 @@ def deleteHostel(request, pk):
 
 
 @login_required(login_url="login")
+@allowed_users(allowed_roles=['admin',])
 def wardens(request):
     wardens = Warden.objects.all()
     context = {"wardens": wardens}
     return render(request, 'account/warden/all.html', context)
 
 
+@allowed_users(allowed_roles=['admin',])
 def wardenSingle(request, pk):
     warden = Warden.objects.get(id=pk)
     context = {"warden": warden}
     return render(request, 'account/warden/view.html', context)
 
 @login_required(login_url="login")
+@allowed_users(allowed_roles=['admin',])
 def createWarden(request):
     warden_form = WardenForm()
 
@@ -137,6 +155,7 @@ def createWarden(request):
 
 
 @login_required(login_url="login")
+@allowed_users(allowed_roles=['admin',])
 def updateWarden(request, pk):
     warden = Warden.objects.get(id=pk)
     warden_form = WardenForm(instance=warden)
@@ -151,6 +170,7 @@ def updateWarden(request, pk):
     return render(request, 'account/warden/add.html', context)
 
 @login_required(login_url="login")
+@allowed_users(allowed_roles=['admin',])
 def deleteWarden(request, pk):
     warden_info = Warden.objects.get(id=pk)
 
@@ -163,6 +183,7 @@ def deleteWarden(request, pk):
 
 
 @login_required(login_url="login")
+@allowed_users(allowed_roles=['admin',])
 def rooms(request):
     rooms = Room.objects.all()
     context = {"rooms": rooms}
@@ -170,12 +191,14 @@ def rooms(request):
 
 
 @login_required(login_url="login")
+@allowed_users(allowed_roles=['admin',])
 def roomSingle(request, pk):
     room = Room.objects.get(id=pk)
     context = {"room": room}
     return render(request, 'account/room/view.html', context)
 
 @login_required(login_url="login")
+@allowed_users(allowed_roles=['admin',])
 def createRoom(request):
     room_form = RoomForm()
 
@@ -190,6 +213,7 @@ def createRoom(request):
 
 
 @login_required(login_url="login")
+@allowed_users(allowed_roles=['admin',])
 def updateRoom(request, pk):
     room = Room.objects.get(id=pk)
     room_form = RoomForm(instance=room)
@@ -205,6 +229,7 @@ def updateRoom(request, pk):
 
 
 @login_required(login_url="login")
+@allowed_users(allowed_roles=['admin',])
 def deleteRoom(request, pk):
     room_info = Room.objects.get(id=pk)
 
@@ -217,18 +242,21 @@ def deleteRoom(request, pk):
 
 
 @login_required(login_url="login")
+@allowed_users(allowed_roles=['admin',])
 def students(request):
     students = Student.objects.all()
     context = {"students": students}
     return render(request, 'account/students/all.html', context)
 
 @login_required(login_url="login")
+@allowed_users(allowed_roles=['admin',])
 def studentSingle(request, pk):
     student = Student.objects.get(id=pk)
     context = {"student": student}
     return render(request, 'account/students/view.html', context)
 
 @login_required(login_url="login")
+@allowed_users(allowed_roles=['admin',])
 def createStudent(request):
     student_form = StudentForm()
 
@@ -243,6 +271,7 @@ def createStudent(request):
 
 
 @login_required(login_url="login")
+@allowed_users(allowed_roles=['admin',])
 def updateStudent(request, pk):
     student = Student.objects.get(id=pk)
     student_form = StudentForm(instance=student)
@@ -258,6 +287,7 @@ def updateStudent(request, pk):
 
 
 @login_required(login_url="login")
+@allowed_users(allowed_roles=['admin',])
 def deleteStudent(request, pk):
     student_info = Student.objects.get(id=pk)
 
@@ -269,8 +299,8 @@ def deleteStudent(request, pk):
     return render(request, 'account/students/delete.html', context)
 
 
+@allowed_users(allowed_roles=['admin',])
 def apply_for_hostel(request):
-
     if request.user is not None:
         apply_form = ApplyForHostelForm(request.POST)
 
@@ -283,3 +313,26 @@ def apply_for_hostel(request):
 
     context = {'apply_form': apply_form}
     return render(request, 'account/apply_for_hostel.html', context)
+
+
+@login_required(login_url="login")
+@allowed_users(allowed_roles=['student',])
+def userPage(request):
+    context= {}
+    return render(request, 'account/user.html', context)
+
+
+@login_required(login_url="login")
+@allowed_users(allowed_roles=['student',])
+def userProfile(request):
+     
+    student = request.user.student
+    form = StudentForm(instance=student)
+
+    if request.method == 'POST':
+        form = StudentForm(request.POST, request.FILES, instance = student)
+        if form.is_valid():
+            form.save()
+
+    context= {'form': form}
+    return render(request, 'account/profile.html', context)

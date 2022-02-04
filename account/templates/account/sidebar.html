@@ -8,6 +8,7 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
                             </a>
+                {% if request.user.is_staff %}
                 <div class="sb-sidenav-menu-heading">Administration</div>
                 
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts1" aria-expanded="false" aria-controls="collapseLayouts1">
@@ -63,6 +64,14 @@
                     <a class="nav-link" href="charts.html">
                         <div class="sb-nav-link-icon"><i class="fas fa-gear"></i></div>
                         Generate Report
+                    </a>
+               
+                {% endif %}
+
+                <div class=""></div>
+                    <a class="nav-link" href="{% url 'user-profile' %}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-gear"></i></div>
+                        Settings
                     </a>
         
                     <a class="nav-link" href="{% url 'logout' %}">

@@ -28,7 +28,7 @@ SECRET_KEY = "django-insecure-utt3#&%&4r8sx8%m%0858hv_7v0uc0bz197srygto&dv3!-a=f
 # SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-utt3#&%&4r8sx8%m%0858hv_7v0uc0bz197srygto&dv3!-a=f' )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 # DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
 
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
     "account",
 ]
 
@@ -147,4 +148,4 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-django_heroku.settings(locals())
+# django_heroku.settings(locals())

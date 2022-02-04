@@ -3,6 +3,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    
     path('', views.home, name='dashboard'),
     path('login/', views.loginPage, name='login'),
     path('logout/', views.logoutUser, name='logout'),
@@ -31,6 +32,10 @@ urlpatterns = [
     path('students/<str:pk>/', views.studentSingle, name='student_single'),
     path('student/update/<str:pk>/', views.updateStudent, name='update_student'),
     path('student/delete/<str:pk>/', views.deleteStudent, name='delete_student'),
-    path('student/apply/hostel', views.apply_for_hostel, name="apply_for_hostel")
+    path('student/apply/hostel', views.apply_for_hostel, name="apply_for_hostel"),
+
+    path('user/', views.userPage, name='user-page'),
+
+    path('user/profile', views.userProfile, name='user-profile'),
   
 ]
