@@ -65,7 +65,10 @@ def registerPage(request):
 @admin_only
 def home(request):
     students = Student.objects.all()
-    context = {"students": students}
+    rooms = Room.objects.all()
+    hostels = Hostel.objects.all()
+    wardens = Warden.objects.all()
+    context = {"students": students, "rooms": rooms, "hostels": hostels, "wardens": wardens}
     return render(request, 'account/dashboard.html', context)
 
 
@@ -299,21 +302,6 @@ def deleteStudent(request, pk):
     return render(request, 'account/students/delete.html', context)
 
 
-@allowed_users(allowed_roles=['admin',])
-def apply_for_hostel(request):
-    if request.user is not None:
-        apply_form = ApplyForHostelForm(request.POST)
-
-        if request.method == 'POST':
-            if apply_form.is_valid():
-                apply_form.save()
-                # send flash message
-                messages.success(request, "You have successfully applied for an Hostel.")
-                return redirect('/profile')
-
-    context = {'apply_form': apply_form}
-    return render(request, 'account/apply_for_hostel.html', context)
-
 
 @login_required(login_url="login")
 @allowed_users(allowed_roles=['student',])
@@ -336,3 +324,74 @@ def userProfile(request):
 
     context= {'form': form}
     return render(request, 'account/profile.html', context)
+
+
+# students
+@allowed_users(allowed_roles=['student',])
+def apply_for_room(request):
+    if request.user.student.room:
+        return HttpResponse('You have already selected room - ' + str(request.user.student.room) + '. Please contact your Hostel Caretaker or Warden')
+
+    if request.method == 'POST':
+        if not request.user.student.no_dues:
+            return HttpResponse('You have dues. Please contact your Hostel Caretaker or Warden')
+        
+        form = SelectionForm(request.POST, instance=request.user.student)
+        if form.is_valid():
+            if request.user.student.room_id:
+                request.user.student.room_allotted = True
+                room_id = request.user.student.room_id
+                room = Room.objects.get(id=room_id)
+                room.vacant = False
+                room.save()
+            form.save()
+            student = request.user.student
+            return render(request, 'account/user.html', {'student': student})
+    else:
+        print('GOT HERE')
+        if not request.user.student.no_dues:
+            return HttpResponse('You have dues. Please contact your Hostel Caretaker or Warden')
+
+        form = SelectionForm(instance=request.user.student)
+
+        student_gender = request.user.student.gender
+        student_course = request.user.student.course
+        student_room_type = request.user.student.course.room_type
+
+        print({'gender':student_gender, 'course':student_course, 'room type':student_room_type})
+
+        hostel = Hostel.objects.filter(
+            gender=student_gender, course=student_course)
+        
+        # returning zero number of hostels
+        print("Hostels: " ,hostel)
+
+        filtered_rooms = Room.objects.none()
+        print(filtered_rooms)
+        print("I'm here before cond.")
+        if student_room_type == 'B':
+            print("I'm here #1")
+            for i in range(len(hostel)):
+                h_id = hostel[i].id
+                filtered_room = Room.objects.filter(
+                    hostel_id=h_id, room_type=['S', 'D'], vacant=True)
+                filtered_rooms = filtered_rooms | filtered_room
+        else :
+            print("I'm here Room type is not B")
+            for i in range(len(hostel)):
+                length = len(hostel)
+                print(length)
+                h_id = hostel[i].id
+                print(h_id)
+                filtered_room = Room.objects.filter(
+                    hostel_id=h_id, room_type=student_room_type, vacant=True)
+                
+                print(filtered_room)
+
+                filtered_rooms = filtered_rooms | filtered_room
+
+                
+                print(filtered_rooms)
+
+        form.fields["room"].queryset = filtered_rooms
+        return render(request, 'account/apply_for_room.html', {'form': form})
