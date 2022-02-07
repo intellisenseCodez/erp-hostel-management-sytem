@@ -203,3 +203,4 @@ class Warden(models.Model):
 #     accept = models.BooleanField(default=False)
 #     reject = models.BooleanField(default=False)
 #     confirm_time = models.DateTimeField(auto_now_add=True)
+
