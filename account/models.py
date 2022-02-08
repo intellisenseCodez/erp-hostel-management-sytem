@@ -48,7 +48,6 @@ class Student(models.Model):
         default=None,
         on_delete=models.CASCADE)
     
-    
     # faculty = models.OneToOneField('faculty', null=True, on_delete=models.CASCADE)
     # department = models.OneToOneField('department', null=True, on_delete=models.SET_NULL)
 
