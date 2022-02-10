@@ -1,0 +1,116 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Online Hostel Management System</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="{% static 'landing/assets/favicon.ico' %}"/>
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link rel="stylesheet" type="text/css" href="{% static 'landing/css/styles.css' %}"/>
+    </head>
+    <body>
+        <!-- Responsive navbar-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container px-5">
+                <a class="navbar-brand" href="{% url 'landing' %}">Backcock University Hostel Management System</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'landing' %}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'noticesstud' %}">Notices</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Page Content-->
+        <div class="container px-4 px-lg-5">
+            <!-- Heading Row-->
+            <div class="row gx-4 gx-lg-5 align-items-center my-5">
+                <div class="col-lg-7">
+                    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        {% comment %} <div class="carousel-item active">
+                        <img src="" class="d-block w-100" alt="...">
+                        </div> {% endcomment %}
+                        <div class="carousel-item active">
+                        <img src="{% static 'landing/assets/image-2.jfif' %}" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item">
+                        <img src="{% static 'landing/assets/image-3.jfif' %}" class="d-block w-100" alt="...">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                    </div>
+                
+                </div>
+                <div class="col-lg-5">
+                    <h1 class="font-weight-light">Online Hostel Management System</h1>
+                    <p>The aim of the project is to build a hostel management system which allows students to select their rooms online. They can also change rooms and pay fees. It also allows wardens to see the status of rooms and its occupants and fee status. Wardens can also make announcements which can be viewed by the students.</p>
+                    <a class="btn btn-primary" href="#!">Call to Action!</a>
+                </div>
+            </div>
+            <!-- Call to Action-->
+            <div class="card text-white bg-secondary my-5 py-4 text-center">
+                <div class="card-body"><p class="text-white m-0">This call to action card is a great place to showcase some important information or display a clever tagline!</p></div>
+            </div>
+            <!-- Content Row-->
+            <div class="row gx-4 gx-lg-5">
+                {% for post in posts %}
+                <div class="col-md-4 mb-5">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h2 class="card-title">{{ post.title }}</h2>
+                            <p class="card-text">{{ post.content }}</p>
+                            <hr>
+                            <p class="card-text text-dark">
+                                Announced on: {{ post.created_on }}
+
+                            </p>
+                        </div>
+                        <div class="card-footer"><a class="btn btn-primary btn-sm" href="#!">More Info</a></div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-sm-12">
+                    <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+                        <div class="w3-display-middle">
+                            <h3 class="w3-jumbo w3-animate-top text-center" style="color:red;">No Notices</h3>
+                            <hr class="w3-border-grey" style="margin:auto;width:60%">
+                            <p class="w3-large w3-center" style="text-align: center;">
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                
+            </div>
+        </div>
+        <!-- Footer-->
+        <footer class="py-5 bg-dark">
+            <div class="container px-4 px-lg-5"><p class="m-0 text-center text-white">Copyright &copy; Backcock University 2021</p></div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="{% static 'landing/js/scripts.js' %}"></script>
+    </body>
+</html>

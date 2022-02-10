@@ -1,0 +1,50 @@
+{% extends 'account/base.html' %}
+
+
+{% block content %}
+{% include 'account/navbar.html' %}
+
+<div id="layoutSidenav">
+    {% include 'account/sidebar.html' %}
+
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">Dashboard</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item ">Dashboard</li>
+                    <li class="breadcrumb-item active">Hostels</li>
+                    <li class="breadcrumb-item active">{{ hostel_info.name }}</li>
+                </ol>
+
+                
+                    <div class="row">
+                        
+
+                        <div class="col-md-12">
+                            <div class="card card-body">
+                                <h5>Warning!</h5>
+                                <hr>
+                                <p>Are you sure you want to delete "{{ hostel_info.name}}"</p>
+
+                                <form action="{% url 'delete_hostel' hostel_info.id %}" method="POST">
+                                    {% csrf_token %}
+                                    
+                                    
+                                    <a class="btn btn-outline-primary btn-sm" href="{% url 'hostel_single' hostel_info.id %}">Cancel</a>
+                                    <input class="btn btn-outline-danger btn-sm" type="submit" name="submit" />
+                                </form>
+                                
+                            </div>
+                        </div>
+
+
+                    </div>
+            
+            </div>
+        </main>
+    </div>
+</div>
+
+{% endblock content %}
+

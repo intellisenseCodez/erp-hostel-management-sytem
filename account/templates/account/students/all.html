@@ -1,0 +1,76 @@
+{% extends 'account/base.html' %}
+
+
+{% block content %}
+{% include 'account/navbar.html' %}
+
+<div id="layoutSidenav">
+    {% include 'account/sidebar.html' %}
+
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">Dashboard</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item ">Dashboard</li>
+                    <li class="breadcrumb-item active">Students</li>
+                </ol>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        Students Records
+                    </div>
+                    <div class="card-body">
+                        <table id="datatablesSimple">
+                            <thead>
+                                <tr>
+                                    <th>Last Name</th>
+                                    <th>First Name</th>
+                                    <th>Matric No</th>
+                                    <th>Hostel</th>
+                                    <th>Room No</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Last Name</th>
+                                    <th>First Name</th>
+                                    <th>Matric No</th>
+                                    <th>Hostel</th>
+                                    <th>Room No</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+
+                                {% for student in students %}
+                                    <tr>
+                                        <td>{{ student.last_name }}</td>
+                                        <td>{{ student.first_name }}</td>
+                                        <td>{{ student.matric_no }}</td>
+                                        <td>{{ student.hostel.name }}</td>
+                                        <td>{{ student.room.no }}</td>
+                                        <td>
+                                            <div class="sb-nav-link-icon">
+                                                 <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'student_single' student.id %}">View</a>
+                                                <a class="btn btn-outline-warning btn-sm btn-block" href="{% url 'update_student' student.id %}">Update</a>
+                                                <a class="btn btn-outline-danger btn-sm btn-block" href="{% url 'delete_student' student.id %}">Delete</a>
+                                            </div>
+                                        
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+{% endblock content %}
