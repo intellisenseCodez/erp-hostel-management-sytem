@@ -15,20 +15,23 @@ from .models import *
 from .forms import *
 
 # Create your views here.
-@unauthenticated_user
+# @unauthenticated_user
 def loginPage(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    else:
+        
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            password = request.POST.get('password')
 
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+            user = authenticate(request, username=username, password=password)
 
-        user = authenticate(request, username=username, password=password)
-
-        if user is not None:
-            login(request, user)
-            return redirect('dashboard')
-        else:
-            messages.info(request, 'Username OR Password is incorrect!')
+            if user is not None:
+                login(request, user)
+                return redirect('dashboard')
+            else:
+                messages.info(request, 'Username OR Password is incorrect!')
 
     context = {}
     return render(request, 'account/login.html', context)
