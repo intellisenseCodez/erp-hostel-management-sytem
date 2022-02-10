@@ -15,7 +15,7 @@ from .models import *
 from .forms import *
 
 # Create your views here.
-@unauthenticated_user
+# @unauthenticated_user
 def loginPage(request):
 
     if request.method == 'POST':
@@ -38,7 +38,7 @@ def logoutUser(request):
     logout(request)
     return redirect('login')
 
-@unauthenticated_user
+# @unauthenticated_user
 def registerPage(request):
     form = CreateUserForm()
 
