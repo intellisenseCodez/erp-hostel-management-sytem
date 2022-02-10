@@ -32,10 +32,19 @@ urlpatterns = [
     path('students/<str:pk>/', views.studentSingle, name='student_single'),
     path('student/update/<str:pk>/', views.updateStudent, name='update_student'),
     path('student/delete/<str:pk>/', views.deleteStudent, name='delete_student'),
+<<<<<<< HEAD
     
     # Students
+=======
+
+
+>>>>>>> 108ca2465df80a37bc7ed90c7688cc00d5c58824
     path('user/', views.userPage, name='user-page'),
     path('user/profile', views.userProfile, name='user-profile'),
+<<<<<<< HEAD
+=======
+    path('user/profile', views.userProfile, name='user-profile'),
+>>>>>>> 108ca2465df80a37bc7ed90c7688cc00d5c58824
     path('student/apply/room', views.apply_for_room, name="apply_for_room"),
   
 ]

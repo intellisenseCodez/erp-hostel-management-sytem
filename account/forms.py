@@ -48,4 +48,8 @@ class DuesForm(forms.Form):
 
 
 class NoDuesForm(forms.Form):
+<<<<<<< HEAD
     choice = forms.ModelChoiceField(queryset=Student.objects.all().filter(no_dues=False))
+=======
+    choice = forms.ModelChoiceField(queryset=Student.objects.all().filter(no_dues=False))
+>>>>>>> 108ca2465df80a37bc7ed90c7688cc00d5c58824

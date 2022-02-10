@@ -48,7 +48,10 @@ class Student(models.Model):
         default=None,
         on_delete=models.CASCADE)
     
+<<<<<<< HEAD
     
+=======
+>>>>>>> 108ca2465df80a37bc7ed90c7688cc00d5c58824
     # faculty = models.OneToOneField('faculty', null=True, on_delete=models.CASCADE)
     # department = models.OneToOneField('department', null=True, on_delete=models.SET_NULL)
 
@@ -114,11 +117,19 @@ class Course(models.Model):
 
     def __str__(self):
         return self.code
+<<<<<<< HEAD
 
 # class Faculty(models.Model):
 #     name = models.CharField(max_length=200, null=True)
 #     date_created = models.DateTimeField(auto_now_add=True, null=True)
 
+=======
+
+# class Faculty(models.Model):
+#     name = models.CharField(max_length=200, null=True)
+#     date_created = models.DateTimeField(auto_now_add=True, null=True)
+
+>>>>>>> 108ca2465df80a37bc7ed90c7688cc00d5c58824
 #     def __str__(self):
 #         return self.name
 
@@ -203,3 +214,7 @@ class Warden(models.Model):
 #     accept = models.BooleanField(default=False)
 #     reject = models.BooleanField(default=False)
 #     confirm_time = models.DateTimeField(auto_now_add=True)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 108ca2465df80a37bc7ed90c7688cc00d5c58824
