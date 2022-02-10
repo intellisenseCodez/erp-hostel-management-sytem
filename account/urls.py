@@ -32,7 +32,6 @@ urlpatterns = [
     path('students/<str:pk>/', views.studentSingle, name='student_single'),
     path('student/update/<str:pk>/', views.updateStudent, name='update_student'),
     path('student/delete/<str:pk>/', views.deleteStudent, name='delete_student'),
-    
     # Students
 
     path('user/', views.userPage, name='user-page'),
