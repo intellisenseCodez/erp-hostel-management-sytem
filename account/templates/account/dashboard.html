@@ -18,27 +18,27 @@
                 <div class="row">
                     <div class="col-xl-3 col-md-6">
                         <div class="card bg-primary text-white mb-4">
-                            <div class="card-body">Hostel Rooms</div>
+                            <div class="card-body">{{ hostels.count }}</div>
                             <div class="card-footer d-flex align-items-center justify-content-between">
-                                <a class="small text-white stretched-link" href="#">Hostel Rooms</a>
+                                <a class="small text-white stretched-link" href="#">Available Hostels</a>
                                 <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                             </div>
                         </div>
                     </div>
                     <div class="col-xl-3 col-md-6">
                         <div class="card bg-warning text-white mb-4">
-                            <div class="card-body">Single Bed Assign</div>
+                            <div class="card-body">{{ rooms.count }}</div>
                             <div class="card-footer d-flex align-items-center justify-content-between">
-                                <a class="small text-white stretched-link" href="#">Single Bed Assign</a>
+                                <a class="small text-white stretched-link" href="#">Total Number of Rooms</a>
                                 <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                             </div>
                         </div>
                     </div>
                     <div class="col-xl-3 col-md-6">
                         <div class="card bg-success text-white mb-4">
-                            <div class="card-body">Bulk Bed Assigned</div>
+                            <div class="card-body">{{ wardens.count }}</div>
                             <div class="card-footer d-flex align-items-center justify-content-between">
-                                <a class="small text-white stretched-link" href="#">Bulk Bed Assigned</a>
+                                <a class="small text-white stretched-link" href="#">Number of Wardens</a>
                                 <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                             </div>
                         </div>

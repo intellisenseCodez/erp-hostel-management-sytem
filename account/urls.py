@@ -32,10 +32,10 @@ urlpatterns = [
     path('students/<str:pk>/', views.studentSingle, name='student_single'),
     path('student/update/<str:pk>/', views.updateStudent, name='update_student'),
     path('student/delete/<str:pk>/', views.deleteStudent, name='delete_student'),
-    path('student/apply/hostel', views.apply_for_hostel, name="apply_for_hostel"),
-
+    
+    # Students
     path('user/', views.userPage, name='user-page'),
-
     path('user/profile', views.userProfile, name='user-profile'),
+    path('student/apply/room', views.apply_for_room, name="apply_for_room"),
   
 ]

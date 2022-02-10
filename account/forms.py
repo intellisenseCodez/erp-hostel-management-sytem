@@ -2,7 +2,7 @@ from django.db.models import fields
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-
+from django import forms
 from .models import *
 
 
@@ -10,6 +10,9 @@ class CreateUserForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'password1', 'password2']
+        help_texts = {
+            'username': 'same as your matric no.',
+        }
 
 
 class StudentForm(ModelForm):
@@ -35,7 +38,14 @@ class WardenForm(ModelForm):
         fields = '__all__'
 
 
-class ApplyForHostelForm(ModelForm):
+class SelectionForm(ModelForm):
     class Meta:
-        model = Apply
-        fields = '__all__'
+        model = Student
+        fields = ['room', 'email']
+
+class DuesForm(forms.Form):
+    choice = forms.ModelChoiceField(queryset=Student.objects.all().filter(no_dues=True))
+
+
+class NoDuesForm(forms.Form):
+    choice = forms.ModelChoiceField(queryset=Student.objects.all().filter(no_dues=False))

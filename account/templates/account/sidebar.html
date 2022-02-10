@@ -61,24 +61,30 @@
 
             
                 <div class=""></div>
-                    <a class="nav-link" href="charts.html">
-                        <div class="sb-nav-link-icon"><i class="fas fa-gear"></i></div>
-                        Generate Report
-                    </a>
-               
-                {% endif %}
+                {% else %}
+                <div class="">
 
-                <div class=""></div>
+                    <a class="nav-link" href="{% url 'apply_for_room' %}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-gear"></i></div>
+                        Apply for Room
+                    </a>
+    
                     <a class="nav-link" href="{% url 'user-profile' %}">
                         <div class="sb-nav-link-icon"><i class="fas fa-gear"></i></div>
                         Settings
                     </a>
         
+                    
+                </div>
+                {% endif %}
+                <div>
                     <a class="nav-link" href="{% url 'logout' %}">
                         <div class="sb-nav-link-icon"><i class="fas fa-lock"></i></div>
                         Logout
                     </a>
                 </div>
+
+                
         </div>
         <div class="sb-sidenav-footer">
             <div class="small">Logged in as:</div>
