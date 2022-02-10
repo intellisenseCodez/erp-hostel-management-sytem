@@ -394,8 +394,4 @@ def apply_for_room(request):
                 print(filtered_rooms)
 
         form.fields["room"].queryset = filtered_rooms
-<<<<<<< HEAD
         return render(request, 'account/apply_for_room.html', {'form': form})
-=======
-        return render(request, 'account/apply_for_room.html', {'form': form})
->>>>>>> 108ca2465df80a37bc7ed90c7688cc00d5c58824
